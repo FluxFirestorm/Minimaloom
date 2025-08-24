@@ -1,0 +1,23 @@
+/* Nav (scoped to .nav to avoid docs sidebar) */
+@layer components {
+  :where(nav.nav) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+  :where(nav.nav) > ul {
+    display: flex;
+    gap: var(--space-3);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    align-items: center;
+  }
+  :where(nav.nav) a {
+    text-decoration: none;
+    color: var(--text);
+  }
+  :where(nav.nav) a:hover { text-decoration: underline; }
+  :where(nav.nav) a.active { font-weight: 600; }
+}

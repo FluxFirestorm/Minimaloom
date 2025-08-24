@@ -1,0 +1,52 @@
+/* ----------------------------------------------------------
+   LAYOUT UTILITIES: stack, cluster, grid + alignment helpers
+   ---------------------------------------------------------- */
+
+@layer utilities {
+  /* 1) Vertical rhythm comes ONLY from gap */
+  :where(.stack) {
+    display: grid;
+    gap: var(--space-4); /* your global scale */
+  }
+
+  /* neutralize margins that make gaps look uneven */
+  :where(.stack) > * {
+    margin: 0; /* cards, grids, clusters, etc. */
+  }
+
+  /* 2) Horizontal row of items */
+  :where(.cluster) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    align-items: stretch; /* equal heights by default */
+    min-block-size: 0;    /* allow shrink in constrained containers */
+  }
+  /* optional alignment modifiers */
+  :where(.items-center)   { align-items: center; }
+  :where(.items-start)    { align-items: flex-start; }
+  :where(.items-end)      { align-items: flex-end; }
+  :where(.justify-start)  { justify-content: flex-start; }
+  :where(.justify-end)    { justify-content: flex-end; }
+  :where(.justify-between){ justify-content: space-between; }
+  :where(.justify-around) { justify-content: space-around; }
+  :where(.justify-center) { justify-content: center; }
+
+  /* 3) Grid */
+  :where(.grid) {
+    display: grid;
+    gap: var(--space-3);
+  }
+  /* simple presets */
+  :where(.grid).md-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  :where(.grid).md-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  :where(.grid).md-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+  /* safety: let grid items actually shrink inside narrow parents */
+  :where(.grid) > * { min-inline-size: 0; }
+
+  /* 4) Containers (if you use them here) */
+  :where(.container)    { max-width: 48rem; margin-inline: auto; padding-inline: var(--space-3); }
+  :where(.container-sm) { max-width: 36rem; margin-inline: auto; padding-inline: var(--space-3); }
+  :where(.container-lg) { max-width: 72rem; margin-inline: auto; padding-inline: var(--space-3); }
+}

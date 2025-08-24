@@ -1,0 +1,33 @@
+/* ----------------------------------------------------------
+   RESET: modern, minimal, low-specificity
+   ---------------------------------------------------------- */
+
+@layer reset {
+  *, *::before, *::after { box-sizing: border-box; }
+  html:focus-within { scroll-behavior: smooth; }
+
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    min-height: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Remove default margins on common block elements */
+  :where(h1, h2, h3, h4, p, figure, blockquote, dl, dd) { margin: 0; }
+
+  /* Images and media */
+  :where(img, svg, video, canvas) { max-inline-size: 100%; block-size: auto; }
+  :where(img, svg, video) { display: block; }
+
+  /* Forms inherit fonts */
+  :where(input, button, textarea, select) { font: inherit; }
+
+  /* Default link styles are handled in base */
+  a { text-decoration-skip-ink: auto; }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  }
+}

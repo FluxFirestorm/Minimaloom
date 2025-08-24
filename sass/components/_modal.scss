@@ -1,0 +1,51 @@
+/* Modal (semantic <dialog>) */
+@layer components {
+  :where(dialog) {
+    padding: 0;
+    border: none;
+    background: none;
+  }
+  :where(dialog)::backdrop {
+    background: color-mix(in oklab, black 35%, transparent);
+    backdrop-filter: blur(2px);
+  }
+  :where(dialog) > article {
+    max-inline-size: min(52rem, calc(100vw - 2rem));
+    margin: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-5);
+    box-shadow: 0 10px 24px color-mix(in oklab, black 10%, transparent);
+  }
+  :where(dialog) > article > header { position: relative; }
+
+  /* absolute close (when header is not flex) */
+  :where(dialog) > article > header:not(.modal-header) [aria-label="Close"][rel="prev"] {
+    position: absolute; top: .75rem; right: .75rem;
+    inline-size: 2rem; block-size: 2rem; display: grid; place-items: center;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--surface); cursor: pointer;
+  }
+  :where(dialog) > article > header:not(.modal-header) [aria-label="Close"][rel="prev"]::before {
+    content: "×"; line-height: 1; font-size: 1.1rem;
+  }
+  :where(dialog) > article > header:not(.modal-header) [aria-label="Close"][rel="prev"]:hover {
+    filter: brightness(.98);
+  }
+
+  /* flex header variant used in docs */
+  :where(.card) > header.modal-header {
+    display: flex; align-items: center; justify-content: space-between; gap: .75rem;
+  }
+  :where(.card) > header.modal-header > p { margin: 0; }
+  :where(.card) > header.modal-header [aria-label="Close"][rel="prev"] {
+    position: static; margin-inline-start: auto;
+    inline-size: 2rem; block-size: 2rem; display: grid; place-items: center;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--surface); cursor: pointer;
+  }
+  :where(.card) > header.modal-header [aria-label="Close"][rel="prev"]::before {
+    content: "×"; line-height: 1; font-size: 1.1rem;
+  }
+}

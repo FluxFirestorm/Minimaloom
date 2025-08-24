@@ -1,0 +1,63 @@
+{
+  "name": "Minimaloom",
+  "version": "0.1.0",
+  "description": "Minimaloom SCSS framework with chainable utilities and Mithril components.",
+  "license": "MIT",
+  "private": false,
+  "type": "module",
+
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "style": "./dist/simple.css",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./simple.css": "./dist/simple.css",
+    "./sass": "./sass/index.scss"
+  },
+  "files": [
+    "dist",
+    "sass",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": [
+    "dist/simple.css"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": "github:FluxFirestorm/Minimaloom",
+
+  "scripts": {
+    "docs:watch:css": "sass --watch sass/index.scss:docs/assets/simple.css src/docs/styles/docs.scss:docs/assets/docs.css",
+    "docs:build:css": "sass --no-source-map sass/index.scss:docs/assets/simple.css src/docs/styles/docs.scss:docs/assets/docs.css",
+
+    "docs:watch:js": "esbuild src/docs/main.ts --bundle --format=esm --sourcemap --outfile=docs/assets/docs.bundle.js --watch",
+    "docs:build:js": "esbuild src/docs/main.ts --bundle --format=esm --minify --outfile=docs/assets/docs.bundle.js",
+
+    "docs:serve": "python3 -m http.server --directory docs 8080",
+
+    "build:css": "sass sass/index.scss dist/simple.css --no-source-map",
+    "build:js": "esbuild src/components/index.ts --bundle --format=esm --outfile=dist/index.mjs && esbuild src/components/index.ts --bundle --format=cjs --outfile=dist/index.cjs",
+    "build:types": "tsc -p tsconfig.json --emitDeclarationOnly --outDir dist",
+    "build": "rimraf dist && npm run build:css && npm run build:js && npm run build:types",
+    "prepublishOnly": "npm run build"
+  },
+
+  "peerDependencies": {
+    "mithril": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/mithril": "^2.2.5",
+    "esbuild": "^0.21.5",
+    "mithril": "^2.2.2",
+    "rimraf": "^5.0.5",
+    "sass": "^1.90.0",
+    "typescript": "^5.9.2"
+  }
+}

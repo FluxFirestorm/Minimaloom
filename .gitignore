@@ -1,0 +1,35 @@
+# --- Dependencies / package managers
+node_modules/
+.pnpm-store/
+.npm/
+.yarn/
+
+# --- Build outputs
+dist/
+
+# --- Docs build artifacts (generated)
+docs/assets/docs.bundle.js
+docs/assets/docs.bundle.js.map
+docs/assets/docs.css
+docs/assets/docs.css.map
+docs/assets/simple.css
+docs/assets/simple.css.map
+
+public/
+.sass-cache/
+
+# --- Logs & env
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+.env
+.env.*.local
+
+# --- OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp

@@ -1,0 +1,20 @@
+/* Card + simple badge */
+@layer components {
+  :where(.card) {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-5);
+  }
+  :where(.card:hover) {
+    border-color: color-mix(in oklab, var(--border) 85%, var(--accent));
+  }
+
+  /* regions shouldn’t look like nested panels */
+  :where(.card) > :is(header, footer) {
+    background: none;
+    border: 0;
+    padding: 0;
+    border-radius: 0;
+  }
+}

@@ -1,0 +1,66 @@
+/* ----------------------------------------------------------
+   UTILITIES: chainable, low-specificity, responsive
+   ---------------------------------------------------------- */
+
+@layer utilities {
+  /* spacing (logical) */
+  :where(.m0) { margin: 0 !important; }
+  :where(.p0) { padding: 0 !important; }
+
+  @for $i from 1 through 8 {
+    .m-#{$i}  { margin: var(--space-#{$i}) !important; }
+    .p-#{$i}  { padding: var(--space-#{$i}) !important; }
+    .mt-#{$i} { margin-block-start: var(--space-#{$i}) !important; }
+    .mb-#{$i} { margin-block-end:   var(--space-#{$i}) !important; }
+    .ms-#{$i} { margin-inline-start: var(--space-#{$i}) !important; }
+    .me-#{$i} { margin-inline-end:   var(--space-#{$i}) !important; }
+
+    .pt-#{$i} { padding-block-start: var(--space-#{$i}) !important; }
+    .pb-#{$i} { padding-block-end:   var(--space-#{$i}) !important; }
+    .ps-#{$i} { padding-inline-start: var(--space-#{$i}) !important; }
+    .pe-#{$i} { padding-inline-end:   var(--space-#{$i}) !important; }
+    .gap-#{$i} { gap: var(--space-#{$i}) !important; }
+  }
+
+  /* text alignment */
+  :where(.text-start)  { text-align: start !important; }
+  :where(.text-center) { text-align: center !important; }
+  :where(.text-end)    { text-align: end !important; }
+
+  /* width helpers */
+  :where(.w-100) { inline-size: 100% !important; }
+  :where(.max-w-sm) { max-inline-size: var(--container-sm) !important; }
+  :where(.max-w-md) { max-inline-size: var(--container-md) !important; }
+  :where(.max-w-lg) { max-inline-size: var(--container-lg) !important; }
+
+  /* display */
+  :where(.block) { display: block !important; }
+  :where(.inline) { display: inline !important; }
+  :where(.inline-block) { display: inline-block !important; }
+
+  /* ring utility */
+  :where(.ring) {
+    outline: 2px solid color-mix(in oklab, var(--accent) 50%, transparent) !important;
+    outline-offset: 2px !important;
+  }
+
+  /* visually hidden but accessible */
+  :where(.sr-only) {
+    position: absolute !important;
+    inline-size: 1px !important;
+    block-size: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0,0,0,0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+
+  /* simple responsive helpers using range media queries */
+  @media (width >= 48rem) {
+    :where(.md\:inline) { display: inline !important; }
+    :where(.md\:flex)   { display: flex !important; }
+    :where(.md\:text-center) { text-align: center !important; }
+  }
+}

@@ -1,0 +1,90 @@
+/* ----------------------------------------------------------
+   FORMS: thin black borders, accessible focus, modern controls
+   ---------------------------------------------------------- */
+
+@layer components {
+  /* Shared field styling */
+  :where(input:not([type="checkbox"], [type="radio"], [type="range"]),
+         select,
+         textarea) {
+    inline-size: 100%;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);           /* thin black border */
+    border-radius: var(--radius);
+    padding-block: .6rem;
+    padding-inline: .75rem;
+    outline: none;
+    box-shadow: none;
+  }
+
+  :where(select) {
+    appearance: none;
+    background-image:
+      linear-gradient(45deg, transparent 50%, currentColor 50%),
+      linear-gradient(135deg, currentColor 50%, transparent 50%);
+    background-position:
+      calc(100% - .95rem) 55%,
+      calc(100% - .6rem) 55%;
+    background-size: .35rem .35rem, .35rem .35rem;
+    background-repeat: no-repeat;
+    padding-inline-end: 2rem;
+  }
+
+  :where(textarea) { min-block-size: 6rem; resize: vertical; }
+
+  /* Date-like inputs */
+  :where(input[type="date"],
+         input[type="datetime-local"],
+         input[type="month"],
+         input[type="time"],
+         input[type="week"]) {
+    appearance: textfield; /* consistent padding */
+  }
+
+  /* Focus styles using outline to avoid layout shift */
+  :where(input, select, textarea):focus-visible {
+    outline: 2px solid color-mix(in oklab, var(--accent) 50%, transparent);
+    outline-offset: 2px;
+  }
+
+  /* Checkboxes and radios: thin black border + accent coloring */
+  :where(input[type="checkbox"], input[type="radio"]) {
+    inline-size: 1.125em;
+    block-size: 1.125em;
+    border: 1px solid var(--border);           /* thin black border */
+    background: var(--bg);
+    color: var(--accent);
+    appearance: none;
+    display: inline-grid;
+    place-content: center;
+    margin: 0;
+  }
+
+  :where(input[type="checkbox"]) { border-radius: .25em; }
+  :where(input[type="radio"])    { border-radius: 50%; }
+
+  :where(input[type="checkbox"]:checked) {
+    background:
+      linear-gradient(currentColor, currentColor) center / 70% 2px no-repeat,
+      linear-gradient(currentColor, currentColor) center / 2px 70% no-repeat;
+  }
+  :where(input[type="radio"]:checked) {
+    background: radial-gradient(currentColor 40%, transparent 41%);
+  }
+
+  /* Grouping helpers */
+  :where(.field) { display: grid; gap: .35rem; }
+  :where(label)  { font-weight: 600; font-size: .95em; }
+
+  /* Inline group */
+  :where(.fields-inline) {
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr));
+  }
+
+  /* Radio/checkbox rows */
+  :where(.choices) { display: grid; gap: .5rem; }
+  :where(.choice)  { display: inline-flex; gap: .5rem; align-items: center; }
+}

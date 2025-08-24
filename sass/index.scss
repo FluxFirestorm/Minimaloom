@@ -1,0 +1,13 @@
+/* index.scss — framework entrypoint
+   Sass requires all @use rules before any other CSS. */
+
+@use "config";
+@use "reset";
+@use "base";
+@use "layout";
+@use "forms";
+@use "components";
+@use "utilities";
+
+/* Optional: declare cascade layer order AFTER the @use rules. */
+@layer tokens, reset, base, layout, components, utilities;

@@ -1,0 +1,77 @@
+/* ----------------------------------------------------------
+   BASE: classless defaults and typography
+   ---------------------------------------------------------- */
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    font-size: var(--step-0);
+    line-height: 1.6;
+    color: var(--text);
+    background: var(--bg);
+  }
+
+  main, .container {
+    width: min(100% - 2rem, var(--container-md));
+    margin-inline: auto;
+  }
+
+  .container-sm { width: min(100% - 2rem, var(--container-sm)); margin-inline: auto; }
+  .container-lg { width: min(100% - 2rem, var(--container-lg)); margin-inline: auto; }
+
+  h1 { font-size: var(--step-4); line-height: 1.1; }
+  h2 { font-size: var(--step-3); line-height: 1.2; }
+  h3 { font-size: var(--step-2); line-height: 1.3; }
+  h4 { font-size: var(--step-1); line-height: 1.4; }
+  small { font-size: var(--step--1); color: var(--muted); }
+
+  p + p { margin-block-start: var(--space-3); }
+
+  a {
+    color: color-mix(in oklab, var(--accent) 100%, transparent);
+    text-decoration: underline;
+    text-decoration-thickness: .08em;
+    text-underline-offset: .2em;
+  }
+
+  code, pre, kbd, samp {
+    font-family: var(--font-mono);
+    font-size: .95em;
+  }
+  pre {
+    background: var(--surface);
+    padding: var(--space-3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: auto;
+  }
+
+  /* Classless cards and sections (do NOT style nested header/footer) */
+  article, section, aside {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-5);
+  }
+
+  /* Optional: page-level header/footer chrome only when they are direct children of main */
+  main > header,
+  main > footer {
+    background: var(--surface);
+    border-block: 1px solid var(--border);
+    padding-block: var(--space-4);
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  th, td { padding: .6rem .8rem; border-block-end: 1px solid var(--border); }
+  thead th { text-align: left; }
+  tbody tr:last-child td { border-block-end: 0; }
+}

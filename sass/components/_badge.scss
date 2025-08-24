@@ -1,0 +1,11 @@
+/* Badge */
+@layer components {
+  :where(.badge) {
+    display: inline-block;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: .15rem .5rem;
+    font-size: .85em;
+    background: var(--surface);
+  }
+}

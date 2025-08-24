@@ -1,0 +1,40 @@
+/* Image Grid + Image Card */
+@layer components {
+  :where(.image-grid) {
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: repeat(auto-fill, minmax(var(--min, 14rem), 1fr));
+  }
+
+  :where(.image-card) {
+    padding: 0;
+    overflow: hidden;
+  }
+
+  :where(.image-card) .toolbar {
+    border-bottom: 1px solid var(--border);
+    padding: .35rem .5rem;
+    background: var(--surface);
+  }
+
+  :where(.image-card) .thumb {
+    aspect-ratio: var(--thumb-ratio, 4/3);
+    overflow: hidden;
+    background: var(--bg);
+  }
+
+  :where(.image-card) img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+  :where(.image-card)[data-fit="contain"] img { object-fit: contain; }
+  :where(.image-card)[data-fit="contain"] .thumb { background: var(--surface); }
+
+  :where(.image-card)[data-selected="true"] {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--accent) 30%, transparent);
+  }
+}

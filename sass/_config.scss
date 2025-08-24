@@ -1,0 +1,81 @@
+/* ----------------------------------------------------------
+   CONFIG: design tokens (override in your app as needed)
+   ---------------------------------------------------------- */
+
+@layer tokens {
+  :root {
+    /* color tokens (oklch for modern precision) */
+    --bg:            oklch(99% .01 0);
+    --surface:       oklch(97% .01 0);
+    --text:          oklch(20% .02 0);
+    --muted:         oklch(47% .03 0);
+    --border:        oklch(20% .02 0); /* black-ish */
+    --accent:        oklch(20% .02 0); /* default accent = black */
+
+    /* sizing & radius */
+    --radius:        .5rem;
+
+    /* spacing scale */
+    --space-0: 0;
+    --space-1: .25rem;
+    --space-2: .5rem;
+    --space-3: .75rem;
+    --space-4: 1rem;
+    --space-5: 1.5rem;
+    --space-6: 2rem;
+    --space-7: 3rem;
+    --space-8: 4rem;
+
+    /* typography */
+    --font-sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+    /* type scale via clamp */
+    --step--1: clamp(.78rem, .77rem + .15vw, .88rem);
+    --step-0:  clamp(.94rem, .90rem + .35vw, 1rem);
+    --step-1:  clamp(1.13rem, 1.04rem + .66vw, 1.25rem);
+    --step-2:  clamp(1.35rem, 1.18rem + 1.09vw, 1.56rem);
+    --step-3:  clamp(1.62rem, 1.32rem + 1.67vw, 1.95rem);
+    --step-4:  clamp(1.94rem, 1.46rem + 2.44vw, 2.44rem);
+
+    /* container width tokens */
+    --container-sm: 42rem;
+    --container-md: 64rem;
+    --container-lg: 80rem;
+
+    color-scheme: light;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:      oklch(19% .02 0);
+      --surface: oklch(24% .02 0);
+      --text:    oklch(96% .01 0);
+      --muted:   oklch(70% .02 0);
+      --border:  oklch(96% .01 0);
+      --accent:  oklch(96% .01 0);
+      color-scheme: dark;
+    }
+  }
+
+  :root[data-theme="light"] {
+    --bg:      oklch(99% .01 0);
+    --surface: oklch(97% .01 0);
+    --text:    oklch(20% .02 0);
+    --muted:   oklch(47% .03 0);
+    --border:  oklch(20% .02 0);
+    --accent:  oklch(20% .02 0);
+    color-scheme: light;
+  }
+
+  :root[data-theme="dark"] {
+    --bg:      oklch(19% .02 0);
+    --surface: oklch(24% .02 0);
+    --text:    oklch(96% .01 0);
+    --muted:   oklch(70% .02 0);
+    --border:  oklch(96% .01 0);
+    --accent:  oklch(96% .01 0);
+    color-scheme: dark;
+  }
+  
+}
