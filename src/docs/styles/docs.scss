@@ -1,9 +1,10 @@
 /* ------------------------------------------------------------------
-   Docs-only CSS (separate from the framework)
+   Docs-only SCSS (separate from the framework)
    - Full-bleed header
    - Main area stretches 100% with ~5px edge on left/right
    - Left sidebar pinned and vertical
    - Softer chrome (fewer borders)
+   - Correct anchor offset for sticky topbar (no double-offset)
    ------------------------------------------------------------------ */
 
 main#app {
@@ -19,27 +20,49 @@ main#app {
   --docs-gutter: clamp(12px, 2vw, 24px);
   --docs-edge: 15px; /* ~5px edge for main shell */
   --docs-stroke: color-mix(in oklab, var(--border) 22%, transparent);
+
+  /* Measured by JS (ResizeObserver) to match real sticky header height */
+  --topbar-h: 4rem;
 }
 
-html, body { max-inline-size: 100%; overflow-x: hidden; }
+/* Viewport basics (no scroll-padding-top to avoid double-offset) */
+html {
+  max-inline-size: 100%;
+  overflow-x: hidden;
+  scroll-behavior: smooth; /* nicer jumps from left-nav */
+}
 body { margin: 0; }
 
 /* Header: full-bleed */
 header.docs-topbar {
-  position: sticky; top: 0; z-index: 20;
+  position: sticky;
+  top: 0;
+  z-index: 20;
   background: var(--bg);
   border-bottom: 1px solid var(--docs-stroke);
   padding-block: .75rem;
   padding: var(--docs-edge);
-}
-header.docs-topbar .container-lg {
-  max-inline-size: none; inline-size: 100%;
-  margin: 0; padding-inline: 0; /* full edge-to-edge */
-}
-.brand { font-weight: 700; letter-spacing: .2px; }
-.brand .logo {
-  inline-size: .9rem; block-size: .9rem; display: inline-block;
-  border: 1px solid var(--docs-stroke); border-radius: .25rem; background: var(--accent);
+
+  .container-lg {
+    max-inline-size: none;
+    inline-size: 100%;
+    margin: 0;
+    padding-inline: 0; /* full edge-to-edge */
+  }
+
+  .brand {
+    font-weight: 700;
+    letter-spacing: .2px;
+
+    .logo {
+      inline-size: .9rem;
+      block-size: .9rem;
+      display: inline-block;
+      border: 1px solid var(--docs-stroke);
+      border-radius: .25rem;
+      background: var(--accent);
+    }
+  }
 }
 
 /* App shell: full width + small side edge */
@@ -51,79 +74,143 @@ header.docs-topbar .container-lg {
   margin: 0;
   padding: var(--docs-gutter) var(--docs-edge);
   box-sizing: border-box;
+
+  /* Lighten card frames inside docs */
+  .card { border-color: var(--docs-stroke); }
 }
-.docs-content { min-inline-size: 0; }
+
+.docs-content {
+  min-inline-size: 0;
+
+  /* --- Anchor targets offset to land below sticky topbar ---
+     Your sections are <article id="..."> with internal padding: var(--space-3).
+     Subtract that padding so the heading inside the card sits just below the bar. */
+  > article[id] { scroll-margin-top: calc(var(--topbar-h) - var(--space-3)); }
+
+  /* If you deep-link to headings directly, they don't have the card padding. */
+  :where(h1, h2, h3, h4, h5, h6)[id] { scroll-margin-top: var(--topbar-h); }
+
+  /* Content chrome */
+  > article {
+    border: 1px solid var(--docs-stroke);
+    border-radius: var(--radius);
+    background: var(--surface);
+    padding: var(--space-3);
+  }
+
+  > * + * { margin-block-start: clamp(16px, 3vw, 28px); }
+
+  h1, h2, h3 { line-height: 1.2; }
+  h1 { font-size: clamp(1.6rem, 1.2rem + 1.5vw, 2rem); }
+  h2 { margin-bottom: .25rem; }
+}
 
 /* Left nav */
 nav.docs-nav {
-  margin: 0; 
-  position: sticky; top: 4.25rem; align-self: start;
+  margin: 0;
+  position: sticky;
+  top: var(--topbar-h); /* use the measured header height */
+  align-self: start;
   border-right: 1px solid var(--docs-stroke);
   padding-right: var(--docs-gutter);
-  background: transparent; border-radius: 0; display: block;
-}
-nav.docs-nav ul { list-style: none; padding: 0; margin: 0; display: block; }
-nav.docs-nav li + li { margin-block-start: .35rem; }
-nav.docs-nav a { display: block; padding: .35rem 0; color: var(--text); text-decoration: none; }
-nav.docs-nav a:hover { text-decoration: underline; }
-section[id] { scroll-margin-top: 5rem; }
+  background: transparent;
+  border-radius: 0;
+  display: block;
 
-/* Content chrome */
-.docs-content > article {
-  border: 1px solid var(--docs-stroke);
-  border-radius: var(--radius);
-  background: var(--surface);
-  padding: var(--space-3);
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: block;
+
+    li + li { margin-block-start: .35rem; }
+  }
+
+  a {
+    display: block;
+    padding: .35rem 0;
+    color: var(--text);
+    text-decoration: none;
+
+    &:hover { text-decoration: underline; }
+  }
 }
-.docs-content > * + * { margin-block-start: clamp(16px, 3vw, 28px); }
-h1, h2, h3 { line-height: 1.2; }
-h1 { font-size: clamp(1.6rem, 1.2rem + 1.5vw, 2rem); }
-h2 { margin-bottom: .25rem; }
 
 /* Example blocks */
-.ex { display: grid; gap: var(--space-3); min-inline-size: 0; }
-.ex-head { display: flex; align-items: center; justify-content: space-between; }
-.ex-actions { display: inline-flex; gap: .25rem; }
-.ex-live, .ex-code {
-  border-radius: var(--radius);
-  background: var(--surface);
-  padding: var(--space-3);
+.ex {
+  display: grid;
+  gap: var(--space-3);
   min-inline-size: 0;
-}
-.ex-live { overflow: clip; }
 
-pre { margin: 0; overflow: auto; max-inline-size: 100%; }
-code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .95em; }
+  &-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &-actions { display: inline-flex; gap: .25rem; }
+
+  &-live,
+  &-code {
+    border-radius: var(--radius);
+    background: var(--surface);
+    padding: var(--space-3);
+    min-inline-size: 0;
+  }
+
+  &-live { overflow: clip; }
+}
+
+pre {
+  margin: 0;
+  overflow: auto;
+  max-inline-size: 100%;
+}
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .95em;
+}
 
 /* Tokens specifics */
-#tokens .grid > * { min-inline-size: 0; }
-#tokens .swatches { display: flex; gap: .5rem; flex-wrap: wrap; max-inline-size: 100%; }
-#tokens .swatch {
-  inline-size: 4.5rem; block-size: 3rem;
-  border: 1px solid var(--docs-stroke);
-  border-radius: var(--radius);
-  display: grid; place-items: center;
-  background: var(--surface);
-}
-#tokens .swatch span {
-  font-size: .8rem;
-  background: color-mix(in oklab, var(--bg) 70%, transparent);
-  padding: .1rem .35rem;
-  border-radius: .35rem;
-  border: 1px solid var(--docs-stroke);
-}
-#tokens .choice {
-  display: grid;
-  grid-template-columns: max-content 1fr max-content;
-  align-items: center;
-  gap: .75rem;
-  min-inline-size: 0;
-}
-#tokens input[type="range"] { inline-size: 100%; max-inline-size: 100%; }
-#tokens output { white-space: nowrap; max-inline-size: 6ch; text-align: right; }
+#tokens {
+  .grid > * { min-inline-size: 0; }
 
-/* Lighten card frames inside docs */
-.docs-shell .card { border-color: var(--docs-stroke); }
+  .swatches {
+    display: flex;
+    gap: .5rem;
+    flex-wrap: wrap;
+    max-inline-size: 100%;
+  }
+
+  .swatch {
+    inline-size: 4.5rem;
+    block-size: 3rem;
+    border: 1px solid var(--docs-stroke);
+    border-radius: var(--radius);
+    display: grid;
+    place-items: center;
+    background: var(--surface);
+
+    span {
+      font-size: .8rem;
+      background: color-mix(in oklab, var(--bg) 70%, transparent);
+      padding: .1rem .35rem;
+      border-radius: .35rem;
+      border: 1px solid var(--docs-stroke);
+    }
+  }
+
+  .choice {
+    display: grid;
+    grid-template-columns: max-content 1fr max-content;
+    align-items: center;
+    gap: .75rem;
+    min-inline-size: 0;
+  }
+
+  input[type="range"] { inline-size: 100%; max-inline-size: 100%; }
+  output { white-space: nowrap; max-inline-size: 6ch; text-align: right; }
+}
 
 /* Responsive collapse */
 @media (width < 64rem) {
@@ -132,5 +219,10 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fo
     gap: var(--docs-gutter);
     padding-inline: var(--docs-edge);
   }
-  nav.docs-nav { position: static; border-right: 0; padding-right: 0; }
+
+  nav.docs-nav {
+    position: static;
+    border-right: 0;
+    padding-right: 0;
+  }
 }

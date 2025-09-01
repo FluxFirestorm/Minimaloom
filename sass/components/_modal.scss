@@ -1,51 +1,214 @@
 /* Modal (semantic <dialog>) */
 @layer components {
-  :where(dialog) {
+  /* Reset */
+  dialog {
     padding: 0;
     border: none;
     background: none;
   }
-  :where(dialog)::backdrop {
+  dialog::backdrop {
     background: color-mix(in oklab, black 35%, transparent);
     backdrop-filter: blur(2px);
   }
-  :where(dialog) > article {
-    max-inline-size: min(52rem, calc(100vw - 2rem));
-    margin: 0;
+
+  /* ── Non-fullscreen: base card geometry (center by default) ───── */
+  /* Use the CARD (<article>) as the positioned box to dodge UA quirks. */
+  dialog:not([data-fullscreen]) > article {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    /* width system with viewport clamp; override via --modal-w or data-size */
+    inline-size: min(calc(100vw - 2rem), var(--modal-w, 40rem)); /* ~640px */
+    max-inline-size: none;
+
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: var(--space-5);
     box-shadow: 0 10px 24px color-mix(in oklab, black 10%, transparent);
+
+    display: grid;
+    grid-template-rows: auto 1fr; /* sticky header + scrollable body */
+    max-block-size: calc(100dvh - 2rem);
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    z-index: 1; /* above backdrop */
   }
-  :where(dialog) > article > header { position: relative; }
+
+  /* Gutter + safe-areas for edge placements */
+  dialog[open]:not([data-fullscreen]) {
+    --modal-gutter-x: max(1rem, env(safe-area-inset-left, 0px));
+    --modal-gutter-y: max(1rem, env(safe-area-inset-top, 0px));
+    --modal-gutter-b: max(1rem, env(safe-area-inset-bottom, 0px));
+    --modal-gutter-r: max(1rem, env(safe-area-inset-right, 0px));
+  }
+
+  /* ── Nine-grid placements (greater specificity than base) ──────── */
+  dialog[data-pos="top-left"]:not([data-fullscreen])        > article { top: var(--modal-gutter-y); left: var(--modal-gutter-x); right: auto; bottom: auto; transform: none; }
+  dialog[data-pos="top-center"]:not([data-fullscreen])      > article { top: var(--modal-gutter-y); left: 50%;                  right: auto; bottom: auto; transform: translateX(-50%); }
+  dialog[data-pos="top-right"]:not([data-fullscreen])       > article { top: var(--modal-gutter-y); right: var(--modal-gutter-r); left: auto; bottom: auto; transform: none; }
+
+  dialog[data-pos="center-left"]:not([data-fullscreen])     > article { top: 50%;                  left: var(--modal-gutter-x);  right: auto; bottom: auto; transform: translateY(-50%); }
+  dialog[data-pos="center"]:not([data-fullscreen])          > article { top: 50%;                  left: 50%;                   right: auto; bottom: auto; transform: translate(-50%, -50%); }
+  dialog[data-pos="center-right"]:not([data-fullscreen])    > article { top: 50%;                  right: var(--modal-gutter-r); left: auto; bottom: auto; transform: translateY(-50%); }
+
+  dialog[data-pos="bottom-left"]:not([data-fullscreen])     > article { bottom: var(--modal-gutter-b); left: var(--modal-gutter-x);  top: auto; right: auto; transform: none; }
+  dialog[data-pos="bottom-center"]:not([data-fullscreen])   > article { bottom: var(--modal-gutter-b); left: 50%;                   top: auto; right: auto; transform: translateX(-50%); }
+  dialog[data-pos="bottom-right"]:not([data-fullscreen])    > article { bottom: var(--modal-gutter-b); right: var(--modal-gutter-r); top: auto; left: auto; transform: none; }
+
+  /* Preset widths */
+  dialog[data-size="xs"] > article { --modal-w: 24rem; }
+  dialog[data-size="sm"] > article { --modal-w: 32rem; }
+  dialog[data-size="md"] > article { --modal-w: 40rem; } /* default */
+  dialog[data-size="lg"] > article { --modal-w: 56rem; }
+  dialog[data-size="xl"] > article { --modal-w: 72rem; }
+
+  /* Header + close */
+  dialog > article > header { position: relative; }
 
   /* absolute close (when header is not flex) */
-  :where(dialog) > article > header:not(.modal-header) [aria-label="Close"][rel="prev"] {
+  dialog > article > header:not(.modal-header) [aria-label="Close"][rel="prev"] {
     position: absolute; top: .75rem; right: .75rem;
     inline-size: 2rem; block-size: 2rem; display: grid; place-items: center;
     border: 1px solid var(--border); border-radius: var(--radius);
     background: var(--surface); cursor: pointer;
   }
-  :where(dialog) > article > header:not(.modal-header) [aria-label="Close"][rel="prev"]::before {
+  dialog > article > header:not(.modal-header) [aria-label="Close"][rel="prev"]::before {
     content: "×"; line-height: 1; font-size: 1.1rem;
   }
-  :where(dialog) > article > header:not(.modal-header) [aria-label="Close"][rel="prev"]:hover {
+  dialog > article > header:not(.modal-header) [aria-label="Close"][rel="prev"]:hover {
     filter: brightness(.98);
   }
 
   /* flex header variant used in docs */
-  :where(.card) > header.modal-header {
+  .card > header.modal-header {
     display: flex; align-items: center; justify-content: space-between; gap: .75rem;
+    padding: var(--space-5);
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
   }
-  :where(.card) > header.modal-header > p { margin: 0; }
-  :where(.card) > header.modal-header [aria-label="Close"][rel="prev"] {
+  .card > header.modal-header > p { margin: 0; }
+  .card > header.modal-header [aria-label="Close"][rel="prev"] {
     position: static; margin-inline-start: auto;
     inline-size: 2rem; block-size: 2rem; display: grid; place-items: center;
     border: 1px solid var(--border); border-radius: var(--radius);
     background: var(--surface); cursor: pointer;
   }
-  :where(.card) > header.modal-header [aria-label="Close"][rel="prev"]::before {
+  .card > header.modal-header [aria-label="Close"][rel="prev"]::before {
     content: "×"; line-height: 1; font-size: 1.1rem;
   }
+
+  /* Scrollable body */
+  dialog > article > .modal-content {
+    overflow: auto;
+    padding: var(--space-5);
+    padding-block-end: max(var(--space-5), env(safe-area-inset-bottom));
+  }
+
+  /* ── Fullscreen variant ────────────────────────────────────────── */
+  dialog[data-fullscreen] {
+    position: fixed;
+    inset: 0;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    transform: none;
+    border: none;
+    background: none;
+  }
+  dialog[data-fullscreen]::backdrop {
+    background: color-mix(in oklab, black 45%, transparent);
+    backdrop-filter: none;
+  }
+  dialog[data-fullscreen] > article {
+    position: absolute;
+    inset: 0;
+    inline-size: 100vw;
+    block-size: 100dvh;
+    max-inline-size: none;
+    max-block-size: none;
+    border: none;
+    border-radius: 0;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow: hidden;
+    padding: 0;
+  }
+  dialog[data-fullscreen] > article > header.modal-header {
+    position: sticky; top: 0; z-index: 1;
+    padding: var(--space-4) var(--space-5);
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+  dialog[data-fullscreen] > article > .modal-content {
+    overflow: auto;
+    padding: var(--space-5);
+    padding-block-end: max(var(--space-5), env(safe-area-inset-bottom));
+    overscroll-behavior: contain;
+  }
+
+/* flex header variant used in docs */
+.card > header.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  padding: var(--space-5);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+/* NEW: the inner wrapper carries the width clamp + alignment */
+.card > header.modal-header .modal-head-inner {
+  flex: 1 1 auto;                         /* consume space, keep button at edge */
+  inline-size: min(100%, var(--modal-header-max, 100%));
+  /* text alignment set by data-align on the header */
+}
+.card > header.modal-header[data-align="start"]  .modal-head-inner { margin-inline: 0;            text-align: start; }
+.card > header.modal-header[data-align="center"] .modal-head-inner { margin-inline: auto;         text-align: center; }
+.card > header.modal-header[data-align="end"]    .modal-head-inner { margin-inline-start: auto;   text-align: end; }
+
+/* Title element inside the wrapper */
+.card > header.modal-header .modal-head-inner > p { margin: 0; }
+
+/* Close button (normal) */
+.card > header.modal-header [aria-label="Close"][rel="prev"] {
+  position: static;
+  margin-inline-start: auto;
+  inline-size: 2rem;
+  block-size: 2rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  cursor: pointer;
+}
+.card > header.modal-header [aria-label="Close"][rel="prev"]::before {
+  content: "×";
+  line-height: 1;
+  font-size: 1.1rem;
+}
+
+/* Dense header option: trim padding and scale button to match */
+.card > header.modal-header.is-dense {
+  padding: var(--space-3) var(--space-4);
+}
+.card > header.modal-header.is-dense [aria-label="Close"][rel="prev"] {
+  inline-size: 1.75rem;
+  block-size: 1.75rem;
+}
+.card > header.modal-header.is-dense [aria-label="Close"][rel="prev"]::before {
+  font-size: 1rem;
+}
+  
+
+  /* Lock background scroll while a fullscreen modal is open */
+  html:has(dialog[open][data-fullscreen]),
+  body:has(dialog[open][data-fullscreen]) { overflow: hidden; }
 }

@@ -16,7 +16,29 @@ import { ModalsSection } from "./sections/Modals";
 import { NavsSection } from "./sections/Navs";
 import { ImagesSection } from "./sections/Images"; 
 
+// In App.ts
 export const App: m.Component = {
+  oncreate() {
+    const header = document.querySelector<HTMLElement>('header.docs-topbar');
+    if (!header) return;
+
+    const apply = () =>
+      document.documentElement.style.setProperty('--topbar-h',
+        `${header.getBoundingClientRect().height}px`);
+
+    // Initial + on resize; ResizeObserver handles content/line-wrap changes
+    apply();
+    const ro = new ResizeObserver(apply);
+    ro.observe(header);
+    window.addEventListener('resize', apply);
+
+    (this as any).__cleanup = () => {
+      ro.disconnect();
+      window.removeEventListener('resize', apply);
+    };
+  },
+  onremove() { (this as any).__cleanup?.(); },
+
   view() {
     return m("div", [
       m(Topbar),
@@ -36,7 +58,7 @@ export const App: m.Component = {
           m(StickyExamples),
           m(UtilitiesSection),
           m(Usage),
-          m("footer.muted", m("small","Minimaloom - classless defaults + utilities."))
+          m("footer.muted", m("small","Minimaloom"))
         ])
       ])
     ]);

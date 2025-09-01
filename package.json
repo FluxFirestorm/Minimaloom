@@ -5,7 +5,6 @@
   "license": "MIT",
   "private": false,
   "type": "module",
-
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -32,28 +31,25 @@
     "access": "public"
   },
   "repository": "github:FluxFirestorm/Minimaloom",
-
   "scripts": {
     "docs:watch:css": "sass --watch sass/index.scss:docs/assets/simple.css src/docs/styles/docs.scss:docs/assets/docs.css",
     "docs:build:css": "sass --no-source-map sass/index.scss:docs/assets/simple.css src/docs/styles/docs.scss:docs/assets/docs.css",
-
     "docs:watch:js": "esbuild src/docs/main.ts --bundle --format=esm --sourcemap --outfile=docs/assets/docs.bundle.js --watch",
     "docs:build:js": "esbuild src/docs/main.ts --bundle --format=esm --minify --outfile=docs/assets/docs.bundle.js",
-
     "docs:serve": "python3 -m http.server --directory docs 8080",
-
     "build:css": "sass sass/index.scss dist/simple.css --no-source-map",
     "build:js": "esbuild src/components/index.ts --bundle --format=esm --outfile=dist/index.mjs && esbuild src/components/index.ts --bundle --format=cjs --outfile=dist/index.cjs",
     "build:types": "tsc -p tsconfig.json --emitDeclarationOnly --outDir dist",
     "build": "rimraf dist && npm run build:css && npm run build:js && npm run build:types",
+    "docs:dev": "concurrently -k -n DOCS-CSS,DOCS-JS,SERVE \"npm:docs:watch:css\" \"npm:docs:watch:js\" \"npm:docs:serve\"",
     "prepublishOnly": "npm run build"
   },
-
   "peerDependencies": {
     "mithril": "^2.0.0"
   },
   "devDependencies": {
     "@types/mithril": "^2.2.5",
+    "concurrently": "^9.2.1",
     "esbuild": "^0.21.5",
     "mithril": "^2.2.2",
     "rimraf": "^5.0.5",
