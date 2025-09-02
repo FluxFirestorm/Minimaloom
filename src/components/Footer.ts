@@ -1,4 +1,4 @@
-import m, { Component, Children } from "mithril";
+import m, { Component, Children, Vnode } from "mithril";
 import { Container } from "./Container";
 
 export type FooterAttrs = {
@@ -9,8 +9,13 @@ export type FooterAttrs = {
 };
 
 export const Footer: Component<FooterAttrs> = {
-  view: ({attrs, children}) =>
-    m("footer", { class: [attrs.sticky ? "sticky-bottom" : "", attrs.class, "card"].filter(Boolean).join(" "),
-                  style: attrs.style },
-      m(Container, { size: attrs.container }, children as Children))
+  view: (vnode: Vnode<FooterAttrs>) => {
+    const { attrs, children } = vnode;
+    const className = [attrs.sticky ? "sticky-bottom" : "", attrs.class, "card"]
+      .filter(Boolean).join(" ");
+    return m("footer", { class: className, style: attrs.style },
+      // use max: instead of size:
+      m(Container, { max: attrs.container }, children as Children)
+    );
+  }
 };

@@ -1,4 +1,4 @@
-import m, { Component, Children } from "mithril";
+import m, { Component, Children, Vnode } from "mithril";
 import { Container } from "./Container";
 
 export type HeaderAttrs = {
@@ -9,8 +9,13 @@ export type HeaderAttrs = {
 };
 
 export const Header: Component<HeaderAttrs> = {
-  view: ({attrs, children}) =>
-    m("header", { class: [attrs.sticky ? "sticky-top" : "", attrs.class, "card"].filter(Boolean).join(" "),
-                  style: attrs.style },
-      m(Container, { size: attrs.container }, children as Children))
+  view: (vnode: Vnode<HeaderAttrs>) => {
+    const { attrs, children } = vnode;
+    const className = [attrs.sticky ? "sticky-top" : "", attrs.class, "card"]
+      .filter(Boolean).join(" ");
+    return m("header", { class: className, style: attrs.style },
+      // use max: instead of size:
+      m(Container, { max: attrs.container }, children as Children)
+    );
+  }
 };

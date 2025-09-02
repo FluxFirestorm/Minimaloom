@@ -1,20 +1,31 @@
-import m, { Component, Children } from "mithril";
+import m, { Component, Children, Vnode } from "mithril";
 
+export type ContainerSize = "sm" | "md" | "lg";
 export type ContainerAttrs = {
-  size?: "sm" | "md" | "lg";  // default md (your .container)
+  /** Size token mapped to container classes. Default "md". */
+  max?: ContainerSize;
+  /** Optional extra classes */
   class?: string;
+  /** Optional inline styles */
   style?: string;
+  /** Optional tag name to render as (div/section/main/etc.) */
+  as?: string;
 };
 
-function sizeClass(size?: ContainerAttrs["size"]) {
-  switch (size) {
-    case "sm": return "container-sm";
-    case "lg": return "container-lg";
-    default:   return "container";
-  }
-}
-
 export const Container: Component<ContainerAttrs> = {
-  view: ({attrs, children}: {attrs: ContainerAttrs; children: Children}) =>
-    m("div", { class: [sizeClass(attrs.size), attrs.class].filter(Boolean).join(" "), style: attrs.style }, children)
+  view(vnode: Vnode<ContainerAttrs>) {
+    const { attrs, children } = vnode;
+    const tag = attrs.as ?? "div";
+
+    // map size token to one of the provided container classes
+    const size = attrs.max ?? "md";
+    const sizeClass =
+      size === "sm" ? "container-sm" :
+      size === "lg" ? "container-lg" :
+      "container";
+
+    const className = [sizeClass, attrs.class].filter(Boolean).join(" ") || undefined;
+
+    return m(tag as any, { class: className, style: attrs.style }, children as Children);
+  }
 };
