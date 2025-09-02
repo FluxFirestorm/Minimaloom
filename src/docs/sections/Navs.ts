@@ -14,7 +14,7 @@ const navHTML = `<nav class="nav">
   </ul>
 </nav>`.trim();
 
-const navTS = `import { Nav, Button } from "your-lib";
+const navTS = `import { Nav, Button } from "minimaloom";
 
 m(Nav, {
   brand: m("strong", "Brand"),

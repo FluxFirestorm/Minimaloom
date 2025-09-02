@@ -59,7 +59,7 @@ const formsHTML = `<form class="stack" onsubmit="event.preventDefault()">
   </div>
 </form>`.trim();
 
-const formsTS = `import { Form, InlineFields, Field, TextInput, TextArea, Select, Checkbox, Radio, Button } from "your-lib";
+const formsTS = `import { Form, InlineFields, Field, TextInput, TextArea, Select, Checkbox, Radio, Button } from "minimaloom";
 
 m(Form, { onsubmit: (e: Event) => e.preventDefault() }, [
   m(InlineFields, { cols: 2 }, [

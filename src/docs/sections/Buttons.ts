@@ -27,7 +27,7 @@ const buttonsHTML = `<div class="stack">
 </div>`.trim();
 
 const buttonsTS = `import m from "mithril";
-import { Button } from "your-lib";
+import { Button } from "minimaloom";
 
 m("div.stack", [
   m("div.cluster.gap-2", [

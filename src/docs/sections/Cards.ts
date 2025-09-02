@@ -35,12 +35,12 @@ const linkHTML = `<a class="card stack" href="#">
 /* ---------- Mithril (TS) snippets ---------- */
 
 const basicTS = `import m from "mithril";
-import { Card } from "your-lib";
+import { Card } from "minimaloom";
 
 m(Card, { title: "Card title" }, m("p", "Body text…"));`.trim();
 
 const mediaTS = `import m from "mithril";
-import { Card, Button } from "your-lib";
+import { Card, Button } from "minimaloom";
 
 m(Card, [
   m("figure.m-0", [

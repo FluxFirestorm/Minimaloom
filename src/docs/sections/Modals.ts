@@ -3,7 +3,7 @@ import { Button, Modal } from "../../components";
 import { CodeExample } from "../lib/CodeExample";
 
 const presetTS = `import m from "mithril";
-import { Modal, Button } from "your-lib";
+import { Modal, Button } from "minimaloom";
 
 const Presets: m.Component = {
   oninit: v => Object.assign(v.state, { xs:false, md:false, lg:false }),
@@ -30,7 +30,7 @@ const Presets: m.Component = {
 };`.trim();
 
 const customTS = `import m from "mithril";
-import { Modal, Button } from "your-lib";
+import { Modal, Button } from "minimaloom";
 
 const CustomWidth: m.Component = {
   oninit: v => (v.state as any).open = false,
@@ -49,7 +49,7 @@ const CustomWidth: m.Component = {
 };`.trim();
 
 const fullscreenTS = `import m from "mithril";
-import { Modal, Button } from "your-lib";
+import { Modal, Button } from "minimaloom";
 
 const FullscreenDemo: m.Component = {
   oninit: v => (v.state as any).open = false,
@@ -68,7 +68,7 @@ const FullscreenDemo: m.Component = {
 
 /* Placement demo snippet (TL / TC / default center / BC / BR) */
 const placementsTS = `import m from "mithril";
-import { Modal, Button } from "your-lib";
+import { Modal, Button } from "minimaloom";
 
 const Placements: m.Component = {
   oninit: v => Object.assign(v.state, { tl:false, tc:false, c:false, bc:false, br:false }),
@@ -114,7 +114,7 @@ const Placements: m.Component = {
 
 /* Header width / alignment / density demo */
 const headerTS = `import m from "mithril";
-import { Modal, Button } from "your-lib";
+import { Modal, Button } from "minimaloom";
 
 const HeaderWidthDemo: m.Component = {
   oninit: v => Object.assign(v.state, { a:false, b:false, c:false }),

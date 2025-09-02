@@ -1,8 +1,9 @@
 import m, { Component, Children, Vnode } from "mithril";
 
 export type ContainerSize = "sm" | "md" | "lg";
+
 export type ContainerAttrs = {
-  /** Size token mapped to container classes. Default "md". */
+  /** Preferred prop: maps to container classes. Default "md". */
   max?: ContainerSize;
   /** Optional extra classes */
   class?: string;
@@ -17,11 +18,10 @@ export const Container: Component<ContainerAttrs> = {
     const { attrs, children } = vnode;
     const tag = attrs.as ?? "div";
 
-    // map size token to one of the provided container classes
-    const size = attrs.max ?? "md";
+    const token = attrs.max ?? "md";
     const sizeClass =
-      size === "sm" ? "container-sm" :
-      size === "lg" ? "container-lg" :
+      token === "sm" ? "container-sm" :
+      token === "lg" ? "container-lg" :
       "container";
 
     const className = [sizeClass, attrs.class].filter(Boolean).join(" ") || undefined;

@@ -1,16 +1,20 @@
 /* Buttons (sizes, variants) */
 @layer components {
   :where(.btn) {
-    --btn-py: .55rem;
+    /* base tokens (md) */
     --btn-px: .9rem;
+    --btn-py: .55rem;
     --btn-font: 1em;
+    --btn-min-h: 2.25rem;
 
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: .5rem;
+
     padding: var(--btn-py) var(--btn-px);
     font-size: var(--btn-font);
+    min-block-size: var(--btn-min-h); /* explicit control of height */
     border: 1px solid var(--border);
     border-radius: var(--radius);
     background: var(--surface);
@@ -19,46 +23,78 @@
     text-decoration: none;
     user-select: none;
     line-height: 1.15;
-    transition: filter .15s ease, transform .02s linear, background-color .15s ease, border-color .15s ease;
-  }
-  :where(.btn:hover) { filter: brightness(0.98); }
-  :where(.btn:active) { transform: translateY(1px); }
-  :where(.btn:disabled), :where(.btn[disabled]) { opacity: .6; cursor: not-allowed; pointer-events: none; }
-  :where(.btn:focus-visible) {
-    outline: 2px solid color-mix(in oklab, var(--accent) 50%, transparent);
-    outline-offset: 2px;
-  }
+    transition:
+      filter .15s ease,
+      transform .02s linear,
+      background-color .15s ease,
+      border-color .15s ease;
 
-  /* sizes */
-  :where(.btn.xs) { --btn-py: .2rem;  --btn-px: .45rem; --btn-font: .82em; border-radius: calc(var(--radius) - 2px); }
-  :where(.btn.sm) { --btn-py: .35rem; --btn-px: .65rem; --btn-font: .9em; }
-  /* default (md) uses base values */
-  :where(.btn.lg) { --btn-py: .75rem; --btn-px: 1.1rem; --btn-font: 1.05em; }
+    /* Prevent parent flex rows (e.g. .cluster) from equalizing heights */
+    align-self: center;
 
-  /* square icon button */
-  :where(.btn.icon) {
-    --btn-py: .4rem; --btn-px: .4rem;
-    aspect-ratio: 1 / 1;
-    min-inline-size: 2rem;
-    padding: var(--btn-py);
-  }
+    &:hover { filter: brightness(.98); }
+    &:active { transform: translateY(1px); }
 
-  /* variants */
-  :where(.btn.primary) {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: var(--bg);
-  }
-  :where(.btn.primary:hover) {
-    filter: none;
-    background: color-mix(in oklab, var(--accent) 92%, black 8%);
-  }
+    &:disabled,
+    &[disabled] {
+      opacity: .6;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
 
-  :where(.btn.ghost) {
-    background: transparent;
-    color: var(--accent);
-    border-color: var(--accent);
+    &:focus-visible {
+      outline: 2px solid color-mix(in oklab, var(--accent) 50%, transparent);
+      outline-offset: 2px;
+    }
+
+    /* sizes */
+    &.xs {
+      --btn-font: .82em;
+      --btn-px: .55rem;
+      --btn-py: .20rem;
+      --btn-min-h: 1.80rem;
+      border-radius: calc(var(--radius) - 2px);
+    }
+    &.sm {
+      --btn-font: .92em;
+      --btn-px: .70rem;
+      --btn-py: .35rem;
+      --btn-min-h: 2.05rem;
+    }
+    /* md uses base tokens above */
+    &.lg {
+      --btn-font: 1.12em;
+      --btn-px: 1.15rem;
+      --btn-py: .85rem;
+      --btn-min-h: 2.90rem;
+    }
+
+    /* square icon button aligns with size */
+    &.icon {
+      padding: var(--btn-py);
+      aspect-ratio: 1 / 1;
+      min-inline-size: var(--btn-min-h);
+    }
+
+    /* variants */
+    &.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--bg);
+
+      &:hover {
+        filter: none;
+        background: color-mix(in oklab, var(--accent) 92%, black 8%);
+      }
+    }
+
+    &.ghost {
+      background: transparent;
+      color: var(--accent);
+      border-color: var(--accent);
+
+      &:hover { background: color-mix(in oklab, var(--accent) 12%, transparent); }
+      &:active { background: color-mix(in oklab, var(--accent) 18%, transparent); }
+    }
   }
-  :where(.btn.ghost:hover) { background: color-mix(in oklab, var(--accent) 12%, transparent); }
-  :where(.btn.ghost:active){ background: color-mix(in oklab, var(--accent) 18%, transparent); }
 }

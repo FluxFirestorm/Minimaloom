@@ -19,7 +19,7 @@ const stickyHTML = `<header class="sticky-top card">
   </div>
 </footer>`.trim();
 
-const stickyTS = `import { Header, Footer, Button } from "your-lib";
+const stickyTS = `import { Header, Footer, Button } from "minimaloom";
 
 m(Header, { sticky: true, container: "lg" },
   m("div.cluster.justify-between.items-center", [
